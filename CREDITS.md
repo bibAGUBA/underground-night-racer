@@ -1,6 +1,6 @@
 # Underground Night Racer: материалы и авторы
 
-Машины, текстуры и звуки загружаются из сети при запуске игры. Необычная техника, люди и звери лежат в папке `models/`.
+Машины, текстуры и звуки загружаются из сети при запуске игры. Необычная техника, люди и звери лежат в папке `models/`, музыка в папке `music/`.
 
 ## Модели машин
 
@@ -45,6 +45,26 @@
 | Кубик-ниндзя | [Project Catnip] Voxel Ninja Run | Raushen | https://sketchfab.com/3d-models/project-catnip-voxel-ninja-run-dab3f156b5dd498490c20bf21a0ded6b |
 
 Упряжь зверей, ранец ниндзя, фонари, оружие и остальные надстройки собраны в коде игры.
+
+## Музыка
+
+Треки лежат в папке `music/`. Название и автор показываются на экране в начале каждого трека.
+
+| Трек | Автор | Лицензия | Источник |
+|---|---|---|---|
+| Racket and Bang | TeknoAXE | CC BY 4.0 | https://teknoaxe.com/Link_Code_3.php?q=2375&genre=Drum_and_Bass |
+| Spiral Flight | TeknoAXE | CC BY 4.0 | https://teknoaxe.com/Link_Code_3.php?q=2341&genre=Drum_and_Bass |
+| Diabolical Maneuvers | TeknoAXE | CC BY 4.0 | https://teknoaxe.com/Link_Code_3.php?q=2303&genre=Drum_and_Bass |
+| Until Your Engine Stops – Motor Horizons | TeknoAXE | CC BY 4.0 | https://teknoaxe.com/Link_Code_3.php?q=2364&genre=Metal |
+| Mechanical Static | TeknoAXE | CC BY 4.0 | https://teknoaxe.com/Link_Code_3.php?q=2393&genre=Rock |
+| Sliding into the Weekend | TeknoAXE | CC BY 4.0 | https://teknoaxe.com/Link_Code_3.php?q=2336&genre=Rock |
+| Nismo | 1000 Handz | CC BY 4.0 | https://freemusicarchive.org/music/1000-handz/cc-by-free-to-use-gran-turismo-ep/nismo/ |
+| Synthetic Eden | David J. Barrios | CC BY 4.0 | https://freemusicarchive.org/music/david-j-barrios/single/intense-doom-style-instrumental-metal-synthetic-eden/ |
+| Rush (альбом Escape) | Of Far Different Nature | CC BY 4.0 | https://opengameart.org/content/escape-album-14-tracks-deep-massive |
+| Midnight Cruiser (меню и гараж) | Zane Little Music | CC0 | https://opengameart.org/content/midnight-cruiser |
+
+Лицензия CC BY 4.0: https://creativecommons.org/licenses/by/4.0/. Изменения: файлы пережаты из MP3 в AAC 128 кбит/с без правки звучания;
+в игре трек может начинаться не с начала, а на отсчёте и в паузе звучит через фильтр.
 
 ## Остальное
 
