@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Underground Night Racer</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#030406">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Night Racer">
+<style>
+:root{--acc:#19c8ff;--line:rgba(255,255,255,.14);--ff:"Avenir Next Condensed","DIN Condensed","Arial Narrow","Helvetica Neue",Arial,sans-serif;}
+*{box-sizing:border-box;}
+html{height:100%;background:#030406;}
+body{margin:0;min-height:100%;min-height:100dvh;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--ff);-webkit-text-size-adjust:100%;
+  padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left));}
+#gbg{position:fixed;inset:0;width:100%;height:100%;display:block;}
+.shade{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse 75% 65% at 50% 50%,rgba(3,4,6,.62),rgba(3,4,6,.25) 62%,rgba(3,4,6,.8));}
+#gate{position:relative;z-index:2;width:100%;max-width:400px;background:rgba(6,8,12,.76);border:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding:30px 28px 0;box-shadow:0 30px 80px rgba(0,0,0,.6);}
+#gate::before{content:"";position:absolute;left:-1px;top:-1px;width:72px;height:3px;background:var(--acc);box-shadow:0 0 18px var(--acc);}
+.logo{margin-bottom:26px;}
+.t1{font-size:clamp(20px,6.6vw,34px);font-weight:700;letter-spacing:.26em;line-height:1;white-space:nowrap;}
+.t2{font-size:12px;font-weight:600;letter-spacing:.82em;color:var(--acc);margin-top:8px;white-space:nowrap;}
+.fld{display:block;position:relative;margin-bottom:16px;}
+.fld span{display:block;font-size:12px;font-weight:600;letter-spacing:.3em;color:rgba(255,255,255,.62);margin-bottom:6px;}
+.fld input{width:100%;height:48px;padding:0 14px;font:600 18px/1 var(--ff);letter-spacing:.06em;color:#fff;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:0;outline:none;-webkit-appearance:none;appearance:none;transition:border-color .15s,box-shadow .15s,background .15s;}
+.fld input:focus{border-color:var(--acc);background:rgba(25,200,255,.07);box-shadow:0 0 0 1px var(--acc),0 0 22px rgba(25,200,255,.22);}
+.fld input:-webkit-autofill{-webkit-text-fill-color:#fff;-webkit-box-shadow:0 0 0 100px #0c131b inset;caret-color:#fff;}
+#gp{padding-right:108px;}
+#gshow{position:absolute;right:4px;bottom:4px;height:40px;padding:0 12px;border:0;background:none;color:rgba(255,255,255,.55);font:700 11px/1 var(--ff);letter-spacing:.2em;cursor:pointer;}
+#gshow:hover,#gshow:focus-visible{color:#fff;outline:none;}
+.chk{display:flex;align-items:center;gap:10px;margin:2px 0 20px;min-height:28px;font-size:15px;color:rgba(255,255,255,.78);cursor:pointer;-webkit-user-select:none;user-select:none;}
+.chk input{position:absolute;opacity:0;width:0;height:0;}
+.chk i{flex:none;width:20px;height:20px;border:1px solid rgba(255,255,255,.4);position:relative;}
+.chk input:checked+i{border-color:var(--acc);background:var(--acc);}
+.chk input:checked+i::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;border:solid #00131c;border-width:0 2px 2px 0;transform:rotate(45deg);}
+.chk input:focus-visible+i{box-shadow:0 0 0 2px rgba(25,200,255,.5);}
+#gb{display:block;width:100%;height:52px;border:0;border-radius:0;background:var(--acc);color:#00131c;font:700 20px/1 var(--ff);letter-spacing:.24em;cursor:pointer;transform:skewX(-12deg);box-shadow:0 0 32px rgba(25,200,255,.45);transition:background .15s;-webkit-appearance:none;appearance:none;}
+#gb span{display:inline-block;transform:skewX(12deg);margin-left:.24em;}
+#gb:hover,#gb:focus-visible{background:#fff;outline:none;}
+#gb:disabled{background:rgba(255,255,255,.2);color:rgba(255,255,255,.65);box-shadow:none;cursor:default;}
+#ge{min-height:22px;margin-top:14px;font-size:15px;line-height:1.35;color:#ff8a80;text-align:center;}
+#gwait{display:none;padding:34px 0 40px;text-align:center;font-size:18px;font-weight:700;letter-spacing:.4em;color:rgba(255,255,255,.85);}
+#gate.wait #gform{display:none;} #gate.wait #gwait{display:block;}
+.foot{margin:16px -28px 0;padding:12px 28px 14px;border-top:1px solid var(--line);font-size:12.5px;letter-spacing:.04em;line-height:1.4;color:rgba(255,255,255,.46);}
+#gbar{position:absolute;left:0;right:0;bottom:0;height:2px;overflow:hidden;}
+#gfill{display:block;height:100%;width:0;background:var(--acc);transition:width .2s,opacity .6s .3s;}
+#gfill.done{opacity:0;}
+@media (max-width:380px){#gate{padding:24px 20px 0;}.foot{margin:14px -20px 0;padding:10px 20px 12px;}}
+@media (max-height:520px) and (min-width:600px){
+  #gate{max-width:700px;display:grid;grid-template-columns:1fr 1.15fr;column-gap:30px;align-items:center;padding:18px 26px 0;}
+  .logo{margin:0;} .t1{font-size:26px;}
+  .fld{margin-bottom:10px;} .fld span{margin-bottom:4px;} .fld input{height:42px;} #gshow{height:34px;}
+  .chk{margin:0 0 10px;} #gb{height:44px;} #ge{min-height:18px;margin-top:8px;font-size:14px;}
+  #gwait{grid-column:2;padding:30px 0;}
+  .foot{grid-column:1/-1;margin:10px -26px 0;padding:8px 26px 10px;}
+}
+</style>
+</head>
+<body>
+<canvas id="gbg" aria-hidden="true"></canvas><div class="shade"></div>
+<main id="gate">
+  <div class="logo"><div class="t1">UNDERGROUND</div><div class="t2">NIGHT RACER</div></div>
+  <form id="gform" novalidate>
+    <label class="fld"><span>ЛОГИН</span><input id="gl" name="username" type="text" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" maxlength="40"></label>
+    <label class="fld"><span>ПАРОЛЬ</span><input id="gp" name="password" type="password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" maxlength="80"><button type="button" id="gshow" tabindex="-1">ПОКАЗАТЬ</button></label>
+    <label class="chk"><input type="checkbox" id="gr" checked><i></i><span>Запомнить на этом устройстве</span></label>
+    <button id="gb" type="submit"><span id="gbt">ВОЙТИ</span></button>
+    <div id="ge" role="alert" aria-live="polite"></div>
+  </form>
+  <div id="gwait"><span id="gtxt">ВХОД</span></div>
+  <div class="foot">Закрытый доступ. Логин и пароль выдаёт владелец игры.</div>
+  <div id="gbar"><i id="gfill"></i></div>
+</main>
+<noscript><p style="position:fixed;left:0;right:0;bottom:12px;text-align:center;color:#ff8a80">Для входа нужен включённый JavaScript.</p></noscript>
+<script>
+(function () {
+'use strict';
+var KEY = 'gate_unr', $ = function (id) { return document.getElementById(id); };
+var gate = $('gate'), form = $('gform'), gl = $('gl'), gp = $('gp'), gr = $('gr'), gb = $('gb'), gbt = $('gbt'), ge = $('ge'), gtxt = $('gtxt'), gfill = $('gfill'), gshow = $('gshow');
+var page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+var BIN = page.indexOf('classic') === 0 ? 'classic.bin' : 'game.bin';
+var subtle = window.crypto && window.crypto.subtle, te = window.TextEncoder ? new TextEncoder() : null, busy = false, raf = 0, file = null;
+
+/* ---------- фон: огни ночной трассы ---------- */
+var cv = $('gbg'), g = cv.getContext('2d'), W = 0, H = 0, L = [], last = 0;
+var still = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+function rnd(a, b) { return a + Math.random() * (b - a); }
+function fit() { var d = Math.min(window.devicePixelRatio || 1, 2); W = cv.width = Math.round(innerWidth * d); H = cv.height = Math.round(innerHeight * d); if (still) frame(0); }
+(function () {
+  var i, neon = ['25,200,255', '255,64,150', '255,214,90', '160,120,255'];
+  for (i = 0; i < 10; i++) { L.push({ x: -8, y: 7, z: i * 15 + 4, c: '255,170,84', r: 1 }); L.push({ x: 8, y: 7, z: i * 15 + 11.5, c: '255,170,84', r: 1 }); }
+  for (i = 0; i < 12; i++) L.push({ x: (i % 2 ? -1 : 1) * rnd(13, 30), y: rnd(2.5, 16), z: rnd(8, 150), c: neon[i % 4], r: rnd(1.2, 2.2) });
+  for (i = 0; i < 3; i++) L.push({ x: rnd(-4.5, 3), y: .75, z: rnd(20, 140), c: '255,42,30', r: .55, v: rnd(8, 14), pair: 1.5 });
+})();
+function glow(x, y, r, c, a, sy) {
+  var R = r * 4, gr;
+  if (a <= .01 || x < -R || x > W + R || y < -R * 4 || y > H + R * 4) return;
+  g.save(); g.translate(x, y); if (sy) g.scale(1, sy);
+  gr = g.createRadialGradient(0, 0, 0, 0, 0, R);
+  gr.addColorStop(0, 'rgba(' + c + ',' + a + ')'); gr.addColorStop(.25, 'rgba(' + c + ',' + a * .35 + ')'); gr.addColorStop(1, 'rgba(' + c + ',0)');
+  g.fillStyle = gr; g.beginPath(); g.arc(0, 0, R, 0, 6.2832); g.fill(); g.restore();
+}
+function frame(t) {
+  if (raf < 0) return;
+  var dt = Math.min((t - last) / 1000 || 0, .05), cx = W / 2, cy = H * .47, f = Math.max(W, H) * .62, i, o, s, x, y, a, r, sky;
+  last = t;
+  g.globalCompositeOperation = 'source-over'; g.fillStyle = '#030406'; g.fillRect(0, 0, W, H);
+  sky = g.createLinearGradient(0, cy - H * .32, 0, cy + H * .08);
+  sky.addColorStop(0, 'rgba(10,16,28,0)'); sky.addColorStop(.78, 'rgba(28,36,58,.5)'); sky.addColorStop(1, 'rgba(8,10,16,0)');
+  g.fillStyle = sky; g.fillRect(0, cy - H * .32, W, H * .4);
+  g.globalCompositeOperation = 'lighter';
+  for (i = 0; i < L.length; i++) {
+    o = L[i]; o.z -= (30 - (o.v || 0)) * dt;
+    if (o.z < 1.2) { o.z += 150; if (o.v) o.x = rnd(-4.5, 3); }
+    s = f / o.z; x = cx + o.x * s; y = cy - (o.y - 1.25) * s; r = Math.max(1.2, o.r * s * .22);
+    a = Math.min(1, o.z / 6) * Math.max(0, 1 - o.z / 150);
+    glow(x, y, r, o.c, a); glow(x, cy + (o.y + 1.25) * s, r * 1.1, o.c, a * .26, 3.2);
+    if (o.pair) { glow(x + o.pair * s, y, r, o.c, a); glow(x + o.pair * s, cy + (o.y + 1.25) * s, r * 1.1, o.c, a * .26, 3.2); }
+  }
+  if (!still) raf = requestAnimationFrame(frame);
+}
+fit(); window.addEventListener('resize', fit);
+if (!still) raf = requestAnimationFrame(frame);
+
+/* ---------- мелочи ---------- */
+function bytes(s) { return te.encode(s); }
+function cat() { var n = 0, o = 0, i, out; for (i = 0; i < arguments.length; i++) n += arguments[i].length; out = new Uint8Array(n); for (i = 0; i < arguments.length; i++) { out.set(arguments[i], o); o += arguments[i].length; } return out; }
+function hex(b) { b = new Uint8Array(b); for (var s = '', i = 0; i < b.length; i++) s += (b[i] < 16 ? '0' : '') + b[i].toString(16); return s; }
+function unhex(s) { for (var out = new Uint8Array(s.length >> 1), i = 0; i < out.length; i++) out[i] = parseInt(s.substr(i * 2, 2), 16); return out; }
+function b64(s) { for (var r = atob(s), out = new Uint8Array(r.length), i = 0; i < r.length; i++) out[i] = r.charCodeAt(i); return out; }
+function same(a, b) { if (a.length !== b.length) return false; for (var d = 0, i = 0; i < a.length; i++) d |= a[i] ^ b[i]; return d === 0; }
+function norm(s) { s = String(s || ''); if (s.normalize) s = s.normalize('NFKC'); return s.trim().toLowerCase(); }
+function say(m) { ge.textContent = m || ''; }
+function wait(m) { gtxt.textContent = m; gate.className = 'wait'; }
+function showForm(m) { gate.className = ''; say(m); }
+
+/* ---------- память входа ---------- */
+function load() {
+  var s = null;
+  try { s = sessionStorage.getItem(KEY); } catch (e) {}
+  if (!s) try { s = localStorage.getItem(KEY); } catch (e) {}
+  try { s = s && JSON.parse(s); } catch (e) { s = null; }
+  return s && s.l && /^[0-9a-f]{64}$/.test(s.k || '') ? s : null;
+}
+function save(login, key, keep) {
+  var s = JSON.stringify({ l: login, k: hex(key) });
+  try { sessionStorage.setItem(KEY, s); } catch (e) {}
+  try { if (keep) localStorage.setItem(KEY, s); else localStorage.removeItem(KEY); } catch (e) {}
+}
+function forget() { try { sessionStorage.removeItem(KEY); } catch (e) {} try { localStorage.removeItem(KEY); } catch (e) {} }
+
+/* ---------- шифр ---------- */
+async function hmac(key, data) { var k = await subtle.importKey('raw', key, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']); return new Uint8Array(await subtle.sign('HMAC', k, data)); }
+async function derive(login, pass, it) {
+  var k = await subtle.importKey('raw', bytes(pass), 'PBKDF2', false, ['deriveBits']);
+  return new Uint8Array(await subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: bytes('unr-gate-v1|' + login), iterations: it }, k, 256));
+}
+function gunzip(buf) { return new Response(new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'))).arrayBuffer(); }
+async function download() {
+  var r = await fetch(BIN, { cache: 'no-cache' }), total, rd, parts = [], got = 0, x, u, o = 0, i, n, p;
+  if (!r.ok) throw new Error('http ' + r.status);
+  total = +r.headers.get('content-length') || 0;
+  if (r.body && r.body.getReader) {
+    rd = r.body.getReader();
+    for (;;) { x = await rd.read(); if (x.done) break; parts.push(x.value); got += x.value.length; if (total) gfill.style.width = Math.min(100, got / total * 100) + '%'; }
+    u = new Uint8Array(got); for (i = 0; i < parts.length; i++) { u.set(parts[i], o); o += parts[i].length; }
+  } else u = new Uint8Array(await r.arrayBuffer());
+  gfill.style.width = '100%'; gfill.className = 'done';
+  if (u.length < 96 || u[0] !== 85 || u[1] !== 78 || u[2] !== 82 || u[3] !== 71 || u[4] !== 1) throw new Error('format');
+  n = new DataView(u.buffer).getUint32(5); p = 9 + n;
+  if (p + 48 > u.length) throw new Error('format');
+  return { head: JSON.parse(new TextDecoder().decode(u.subarray(9, p))), signed: u.subarray(0, u.length - 32), iv: u.subarray(p, p + 16), ct: u.subarray(p + 16, u.length - 32), mac: u.subarray(u.length - 32) };
+}
+/* вернёт страницу игры, либо null, если логин или пароль не подошли */
+async function unlock(login, key) {
+  var f = await file, id = hex(await subtle.digest('SHA-256', bytes('unr-gate-uid|' + login))).slice(0, 16), w = f.head.u[id], nonce, wk, tag, pad, ck, i, aes, plain;
+  if (!w) return null;
+  w = b64(w); nonce = b64(f.head.n); wk = w.subarray(0, 32);
+  tag = await hmac(key, cat(bytes('tag|'), nonce, wk));
+  if (!same(tag.subarray(0, 16), w.subarray(32, 48))) return null;
+  pad = await hmac(key, cat(bytes('wrap|'), nonce)); ck = new Uint8Array(32);
+  for (i = 0; i < 32; i++) ck[i] = wk[i] ^ pad[i];
+  if (!same(await hmac(await hmac(ck, bytes('game-mac')), f.signed), f.mac)) throw new Error('mac');
+  aes = await subtle.importKey('raw', await hmac(ck, bytes('game-enc')), { name: 'AES-CBC' }, false, ['decrypt']);
+  plain = await subtle.decrypt({ name: 'AES-CBC', iv: f.iv }, aes, f.ct);
+  if (f.head.z) plain = await gunzip(plain);
+  return new TextDecoder('utf-8').decode(plain);
+}
+function fail(ex) {
+  var m = String(ex && ex.message || ex);
+  return /^http|fetch|network|load failed/i.test(m) ? 'Не удалось загрузить игру. Проверьте интернет и обновите страницу.'
+    : /format|mac/.test(m) ? 'Файл игры обновляется. Обновите страницу через минуту.'
+    : 'Не получилось открыть игру. Обновите страницу.';
+}
+function launch(html, login) {
+  cancelAnimationFrame(raf); raf = -1;
+  window.UNR_GATE = { user: login, exit: function () { forget(); location.reload(); } };
+  document.open(); document.write(html); document.close();
+}
+
+/* ---------- вход ---------- */
+gshow.addEventListener('click', function () { var on = gp.type === 'password'; gp.type = on ? 'text' : 'password'; gshow.textContent = on ? 'СКРЫТЬ' : 'ПОКАЗАТЬ'; gp.focus(); });
+form.addEventListener('submit', async function (e) {
+  var login, pass, f, key, html;
+  e.preventDefault(); if (busy || gb.disabled) return;
+  login = norm(gl.value); pass = gp.value.trim();
+  if (!login || !pass) { say('Введите логин и пароль'); (login ? gp : gl).focus(); return; }
+  busy = true; gb.disabled = true; say(''); gbt.textContent = 'ПРОВЕРКА';
+  try {
+    f = await file; key = await derive(login, pass, f.head.it); html = await unlock(login, key);
+    if (html != null) { save(login, key, gr.checked); wait('ЗАПУСК'); launch(html, login); return; }
+    say('Неверный логин или пароль'); gp.select();
+  } catch (ex) { say(fail(ex)); }
+  busy = false; gb.disabled = false; gbt.textContent = 'ВОЙТИ';
+});
+(async function () {
+  var s, html;
+  if (!subtle || !te || !window.fetch || !window.DecompressionStream) { showForm('Этот браузер устарел. Откройте игру в свежем Chrome, Safari или Firefox.'); gb.disabled = true; return; }
+  file = download(); file.catch(function () {});
+  if (location.hash === '#exit') { forget(); try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
+  s = load();
+  if (!s) { if (!(window.matchMedia && matchMedia('(pointer: coarse)').matches)) gl.focus(); return; }
+  wait('ВХОД');
+  try {
+    html = await unlock(s.l, unhex(s.k));
+    if (html != null) return launch(html, s.l);
+    forget(); showForm('Доступ изменился. Войдите заново.');
+  } catch (ex) { showForm(fail(ex)); }
+  gl.value = s.l;
+})();
+})();
+</script>
+</body>
+</html>
