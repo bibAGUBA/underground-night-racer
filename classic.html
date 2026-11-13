@@ -198,6 +198,8 @@ function fail(ex) {
 function launch(html, login) {
   cancelAnimationFrame(raf); raf = -1;
   window.UNR_GATE = { user: login, exit: function () { forget(); location.reload(); } };
+  /* пометка, чей это вход: если расшифрованную страницу сохранят и раздадут, по ней видно логин */
+  html = html.replace('<body>', '<body data-copy="' + hex(bytes(login)) + '">');
   document.open(); document.write(html); document.close();
 }
 
