@@ -80,8 +80,7 @@ body{margin:0;min-height:100%;min-height:100dvh;display:flex;align-items:center;
 'use strict';
 var KEY = 'gate_unr', $ = function (id) { return document.getElementById(id); };
 var gate = $('gate'), form = $('gform'), gl = $('gl'), gp = $('gp'), gr = $('gr'), gb = $('gb'), gbt = $('gbt'), ge = $('ge'), gtxt = $('gtxt'), gfill = $('gfill'), gshow = $('gshow');
-var page = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
-var BIN = page.indexOf('classic') === 0 ? 'classic.bin' : 'game.bin';
+var BIN = 'game.bin';
 var subtle = window.crypto && window.crypto.subtle, te = window.TextEncoder ? new TextEncoder() : null, busy = false, raf = 0, file = null;
 
 /* ---------- фон: огни ночной трассы ---------- */
